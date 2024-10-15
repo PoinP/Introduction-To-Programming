@@ -62,10 +62,6 @@ if()
 {
     std::cout << "Second option";
 }
-
-// или
-if()
-    std::cout << "Third option
 ```
 
 ## Видимост на променливите
