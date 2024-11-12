@@ -7,6 +7,52 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterArray(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> arr[i];
+	}
+}
+
+int main()
+{
+	int arr[100];
+	int size;
+
+	std::cout << "Please enter the size of the array: ";
+	std::cin >> size;
+
+	std::cout << "Enter the array's elements: ";
+	enterArray(arr, size);
+
+	int minEl = arr[0];
+	int maxEl = arr[0];
+
+	int minIndex = 0;
+	int maxIndex = 0;
+
+
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] < minEl)
+		{
+			minEl = arr[i];
+			minIndex = i;
+		}
+
+		if (arr[i] > maxEl)
+		{
+			maxEl = arr[i];
+			maxIndex = i;
+		}
+	}
+
+	std::cout << "Max value: " << maxEl << ", with index " << maxIndex << std::endl;
+	std::cout << "Min value: " << minEl << ", with index " << minIndex << std::endl;
+}
 ```
 
 </p>
@@ -19,6 +65,62 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterArray(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> arr[i];
+	}
+}
+
+void printArray(const int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << arr[i] << " ";
+	}
+}
+
+int main()
+{
+	int arr[100];
+	int size;
+
+	std::cout << "Please enter the size of the array: ";
+	std::cin >> size;
+
+	std::cout << "Enter the array's elements: ";
+	enterArray(arr, size);
+
+	int minEl = arr[0];
+	int maxEl = arr[0];
+
+	int minIndex = 0;
+	int maxIndex = 0;
+
+
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] < minEl)
+		{
+			minEl = arr[i];
+			minIndex = i;
+		}
+
+		if (arr[i] > maxEl)
+		{
+			maxEl = arr[i];
+			maxIndex = i;
+		}
+	}
+
+	arr[minIndex] = maxEl;
+	arr[maxIndex] = minEl;
+
+	printArray(arr, size);
+}
 ```
 
 </p>
