@@ -133,6 +133,41 @@ int main()
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterArray(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> arr[i];
+	}
+}
+
+bool doesArrayHaveTwoConsecutiveZeros(int arr[], int size)
+{
+	for (int i = 0; i < size - 1; i++)
+	{
+		if (arr[i] == 0 && arr[i] == arr[i + 1]) 
+			return true;
+	}
+
+	return false;
+}
+
+int main()
+{
+	int arr[500];
+	int size;
+
+	std::cout << "Please enter the size of the array: ";
+	std::cin >> size; // You can validate size here!
+
+	std::cout << "Enter the array's elements: ";
+	enterArray(arr, size);
+
+
+	std::cout << std::boolalpha << doesArrayHaveTwoConsecutiveZeros(arr, size);
+}
 ```
 
 </p>
@@ -146,6 +181,73 @@ int main()
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterArray(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> arr[i];
+	}
+}
+
+int getFirstPositive(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] > 0) 
+			return arr[i];
+	}
+
+	return -1;
+}
+
+int getSumAfterFirstPositive(int arr[], int size)
+{
+	double sum = 0;
+
+	if (!getFirstPositive(arr, size)) 
+		return sum;
+
+	bool foundPositive = false;
+
+	for (int i = 0; i < size; i++)
+	{
+		if (foundPositive) 
+			sum += arr[i];
+
+		if (arr[i] > 0) 
+			foundPositive = true;
+	}
+
+	return sum;
+}
+
+
+int main()
+{
+	int arr[250];
+	int size;
+
+	std::cout << "Please enter the size of the array: ";
+	std::cin >> size;
+
+	std::cout << "Enter the array's elements: ";
+	enterArray(arr, size);
+
+	int firstPositive = getFirstPositive(arr, size);
+
+	if (firstPositive > 0)
+	{
+		int sumAfterPositive = getSumAfterFirstPositive(arr, size);
+		std::cout << "The first positive number in the array is: " << firstPositive << std::endl;
+		std::cout << "And the sum of the numbers after it is: " << sumAfterPositive << std::endl;
+	}
+	else
+	{
+		std::cout << "There are no positive numbers in the array!" << std::endl;
+	}
+}
 ```
 
 </p>
@@ -163,6 +265,56 @@ int main()
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterArray(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> arr[i];
+	}
+}
+
+void printArray(int arr[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << arr[i] << " ";
+	}
+}
+
+void reverseArray(int arr[], int size)
+{
+	int i = 0;
+	int j = size - 1;
+	int temp;
+
+	while (i < size / 2)
+	{
+		temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
+
+		i++;
+		j--;
+	}
+}
+
+int main()
+{
+	int arr[100];
+	int size;
+
+	std::cout << "Please enter the size of the array: ";
+	std::cin >> size;
+
+	std::cout << "Enter the array's elements: ";
+	enterArray(arr, size);
+
+	reverseArray(arr, size);
+
+	printArray(arr, size);
+}
 ```
 
 </p>
@@ -175,6 +327,65 @@ int main()
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterString(char string[], const int length)
+{
+    std::cout << "Please enter the elements of the array: " << std::endl;
+
+    int i;
+    for (i = 0; i < length; i++)
+    {
+        std::cin >> string[i];
+    }
+
+    string[i] = '\0';
+}
+
+int replaceCharacterAndGetRepeatingCount(char string[], const int length, const char character)
+{
+    int counter = 0;
+
+    for (int i = 0; i < length; i++)
+    {
+        if (string[i] == character)
+        {
+            counter++;
+            string[i] = '*';
+        }
+    }
+
+    return counter;
+}
+
+int main()
+{
+	const int ARRAY_SIZE = 150;
+
+	int userLength;
+	char character;
+	char string[ARRAY_SIZE];
+
+	std::cout << "How many characters do you want to enter[1 - 150]: ";
+
+	do
+	{
+		std::cin >> userLength;
+	} while (userLength < 1 || userLength > 150);
+
+	enterString(string, userLength);
+
+    std::cout << string << std::endl;
+
+    std::cout << "Which character would you like to replace: ";
+	std::cin >> character;
+
+	int repeatingCount = replaceCharacterAndGetRepeatingCount(string, userLength, character);
+
+	std::cout << "The character " << character << " is repeated " << repeatingCount << " times." << std::endl;
+
+    std::cout << string << std::endl;
+}
 ```
 
 </p>
@@ -187,6 +398,43 @@ int main()
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterArray(int arr[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        std::cin >> arr[i];
+    }
+}
+
+bool isArrayMirrored(int arr[], int size)
+{
+    int halfSize = size / 2;
+
+    for (int i = 0; i < halfSize; i++)
+    {
+        if (arr[i] != arr[size - i - 1]) 
+            return false;
+    }
+
+    return true;
+}
+
+int main()
+{
+    int arr[50];
+    int size;
+
+    std::cout << "Please enter the size of the array: ";
+    std::cin >> size;
+
+    std::cout << "Enter the array's elements: ";
+    enterArray(arr, size);
+
+    std::cout << std::boolalpha << "Is array mirrored: " << isArrayMirrored(arr, size);
+}
+
 ```
 
 </p>
