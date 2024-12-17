@@ -7,6 +7,37 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+void swap(int& x, int& y)
+{
+	int temp = x;
+	x = y;
+	y = temp;
+}
+
+void swap(int* x, int* y)
+{
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+int main()
+{
+	int x, y;
+
+	std::cin >> x >> y;
+
+	std::cout << "Before swap: ";
+	std::cout << "x = " << x << ", y = " << y << "\n";
+
+	swap(x, y);
+	//swap(&x, &y);
+
+	std::cout << "After swap: ";
+	std::cout << "x = " << x << ", y = " << y << "\n";
+}
 ```
 
 </p>
@@ -21,6 +52,51 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterArray(int* arr, int arrSize)
+{
+	for (int i = 0; i < arrSize; i++)
+	{
+		std::cin >> *(arr + i);
+	}
+}
+
+int* getElementPointer(int* arr, int arrSize, int element)
+{
+	for (int i = 0; i < arrSize; i++)
+	{
+		if (*(arr + i) == element)
+			return arr + i;
+	}
+
+	return nullptr;
+}
+
+int main()
+{
+	const int ARRAY_SIZE = 100;
+
+	int arr[ARRAY_SIZE];
+	int arrSize;
+
+	std::cout << "Enter array size: ";
+	std::cin >> arrSize;
+
+	std::cout << "Enter array: ";
+	enterArray(arr, arrSize);
+
+	int number;
+	std::cout << "Which number are you searching for: ";
+	std::cin >> number;
+
+	int* ptr = getElementPointer(arr, arrSize, number);
+
+	if (ptr != nullptr)
+		std::cout << "The address of this number is: " << ptr;
+	else
+		std::cout << "No such element in array!";
+}
 ```
 
 </p>
@@ -44,6 +120,63 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+void enterShipments(int *arr, int size)
+{
+	std::cout << "Enter shipments: " << std::endl;
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> arr[i];
+	}
+}
+
+void printShipCourses(int boatCapacity, int *shipments, int shipmentAmount)
+{
+	int shipmentWeight = 0;
+	for (int i = 0; i < shipmentAmount; i++)
+	{
+		shipmentWeight += *(shipments + i);
+
+		if (shipmentWeight > boatCapacity)
+		{
+			shipmentWeight -= *(shipments + i);
+			std::cout << shipmentWeight << " ";
+			shipmentWeight = *(shipments + i);
+		}
+	}
+}
+
+int main()
+{
+	const int MAX_SHIPMENT_AMOUNT = 109;
+	const int MIN_SHIPMENT_AMOUNT = 10;
+	const int MAX_SHIP_CAPACITY = 500;
+	const int MIN_SHIP_CAPACITY = 100;
+
+	int shipments[MAX_SHIPMENT_AMOUNT];
+	int shipmentAmount;
+	int boatCapacity;
+
+	do
+	{
+		std::cout << "Please enter the boat's capacity["
+			<< MIN_SHIP_CAPACITY << ".."
+			<< MAX_SHIP_CAPACITY << "] = ";
+		std::cin >> boatCapacity;
+	} while (boatCapacity < MIN_SHIP_CAPACITY || boatCapacity > MAX_SHIP_CAPACITY);
+
+	do
+	{
+		std::cout << "Please enter the amount of shipments ["
+			<< MIN_SHIPMENT_AMOUNT << ".."
+			<< MAX_SHIPMENT_AMOUNT << "] = ";
+		std::cin >> shipmentAmount;
+	} while (shipmentAmount < MIN_SHIPMENT_AMOUNT || shipmentAmount > MAX_SHIPMENT_AMOUNT);
+
+	enterShipments(shipments, shipmentAmount);
+	printShipCourses(boatCapacity, shipments, shipmentAmount);
+}
 ```
 
 </p>
@@ -65,6 +198,58 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+void fillArray(int* arr, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> arr[i];
+	}
+}
+
+bool isSubSet(int* subSet, int subSize, int* set, int setSize)
+{
+	if (subSize > setSize)
+		return false;
+
+	bool inlcludesElement = false;
+
+	for (int i = 0; i < subSize; i++)
+	{
+		for (int j = 0; j < setSize; j++)
+		{
+			if (subSet[i] == set[j])
+			{
+				inlcludesElement = true;
+				break;
+			}
+		}
+
+		if (!inlcludesElement)
+			return false;
+	}
+
+	return true;
+}
+
+int main()
+{
+	int subSet[] = { 11, 72, 13, 14, 15 };
+	unsigned subSetSize = sizeof(subSet) / sizeof(int);
+
+	int userSet[100];
+	unsigned setSize;
+
+	std::cout << "Enter set size: ";
+	std::cin >> setSize;
+
+	fillArray(userSet, setSize);
+
+	bool isInSet = isSubSet(subSet, subSetSize, userSet, setSize);
+
+	std::cout << std::boolalpha << "Is it a subset of your set: " << isInSet << std::endl;
+}
 ```
 
 </p>
@@ -77,6 +262,42 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+bool duplicates(long* pointers[], int size)
+{
+    while (size > 1)
+    {
+        for (int i = 1; i < size; i++)
+        {
+            if (**pointers == **(pointers + i)) 
+                return true;
+
+            // *(*(pointers)) -> *(&a) -> a
+            // *(*(pointers + 1)) -> *(&b) -> b
+            // *(*(pointers + 2)) -> *(&c) -> c
+            // *(*(pointers + 3)) -> *(&d) -> d
+        }
+
+        pointers = pointers + 1; //pointers++;
+        size--;
+    }
+
+    return false;
+}
+
+int main()
+{
+    long a, b, c, d;
+    a = 1; b = 2; c = 3; d = 2;
+
+    long* pointers[]{ &a, &b, &c, &d };
+    int size = 4;
+
+    bool hasDuplicates = duplicates(pointers, size);
+
+    std::cout << std::boolalpha << hasDuplicates;
+}
 ```
 
 </p>
@@ -89,6 +310,42 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+int sumArray(int arr[], unsigned size)
+{
+	int sum = 0;
+
+	for (int i = 0; i < size; i++)
+	{
+		sum += arr[i];
+	}
+
+	return sum;
+}
+
+void pointToMinSum(int arr1[], unsigned arr1Size, int arr2[], unsigned arr2Size, int*& minArr)
+{
+	int arr1Sum = sumArray(arr1, arr1Size);
+	int arr2Sum = sumArray(arr2, arr2Size);
+
+	minArr = arr1Sum < arr2Sum ? arr1 : arr2;
+}
+
+int main()
+{
+	int arr1[] = { 1, 2, 3, 4, 5 };
+	int arr1Size = sizeof(arr1) / sizeof(int);
+
+	int arr2[] = { 6, 7, 8, 9 };
+	int arr2Size = sizeof(arr2) / sizeof(int);
+
+	int* minArr;
+
+	pointToMinSum(arr1, arr1Size, arr2, arr2Size, minArr);
+
+	std::cout << "The first element of the min sum array is: " << *minArr << std::endl;
+}
 ```
 
 </p>
@@ -106,6 +363,65 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+const int MATRIX_SIZE = 20;
+
+void fillMatrix(int (*matrix)[MATRIX_SIZE], int size) // same as fillMatrix(int matrix[][MATRIX_SIZE], int size)
+{
+	for (int row = 0; row < size; row++)
+	{
+		for (int column = 0; column < size; column++)
+		{
+			if (row + column < size - 1)
+				(*(matrix + row))[column] = 0;
+
+			// Alternative ways of doing it:
+			//		   matrix[row][column] = 0;
+			//   (*(matrix + row))[column] = 0;
+			// *(*(matrix + row) + column) = 0;
+
+			if (row + column == size - 1)
+				(*(matrix + row))[column] = 1;
+
+			// Alternative ways of doing it:
+			//	       matrix[row][column] = 1;
+			//	 (*(matrix + row))[column] = 1;
+			// *(*(matrix + row) + column) = 1;
+
+			if (row + column >= size)
+				(*(matrix + row))[column] = 2;
+
+			// Alternative ways of doing it:
+			//	       matrix[row][column] = 2;
+			//	 (*(matrix + row))[column] = 2;
+			// *(*(matrix + row) + column) = 2;
+
+		}
+	}
+}
+
+void printMatrix(int(*matrix)[MATRIX_SIZE], int size)
+{
+	for (int row = 0; row < size; row++)
+	{
+		for (int column = 0; column < size; column++)
+		{
+			std::cout << (*(matrix + row))[column] << " ";
+			//*(*(matrix + row) + column)
+		}
+
+		std::cout << std::endl;
+	}
+}
+
+int main()
+{
+	int matrix[MATRIX_SIZE][MATRIX_SIZE];
+
+	fillMatrix(matrix, MATRIX_SIZE);
+	printMatrix(matrix, MATRIX_SIZE);
+}
 ```
 
 </p>
@@ -124,6 +440,163 @@
 <p>
 
 ```cpp
+#include <iostream>
+
+void fillArray(double* arr, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cin >> arr[i];
+	}
+}
+
+void printArray(double* arr, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << arr[i] << " ";
+	}
+}
+
+void swap(double& x, double& y)
+{
+	double temp = x;
+	x = y;
+	y = temp;
+}
+
+void reverseArray(double* arr, int size)
+{
+	for (int i = 0; i < size / 2; i++)
+	{
+		swap(arr[i], arr[size - i - 1]);
+	}
+}
+
+int main()
+{
+	double arr[100];
+	int size;
+
+	std::cin >> size;
+	fillArray(arr, size);
+
+	reverseArray(arr, size);
+
+	std::cout << "Reversed array: \n";
+	printArray(arr, size);
+}
+```
+
+</p>
+</details>
+
+## Задача 8
+Напишете функция, която приема два низа и един указател, като пренасочете указателя да сочи низа, чийто дължина е най-малка
+
+<details><summary><b>Solution</b></summary> 
+<p>
+
+```cpp
+#include <iostream>
+
+unsigned length(const char* str)
+{
+	if (str == nullptr)
+		return 0;
+
+	unsigned length = 0;
+
+	while (*str != '\0')
+	{
+		length++;
+		str++;
+	}
+
+	return length;
+}
+
+void pointToShortest(const char* str1, const char* str2, const char*& ptr)
+{
+	if (length(str1) > length(str2))
+	{
+		ptr = str2;
+	}
+	else
+	{
+		ptr = str1;
+	}
+}
+
+int main()
+{
+	const char* str1 = "Hello";
+	const char* str2 = "No";
+
+	const char* myPtr = nullptr;
+	pointToShortest(str1, str2, myPtr);
+
+	if (myPtr == nullptr)
+	{
+		std::cout << "Nullptr!";
+	}
+	else
+	{
+		std::cout << myPtr;
+	}
+}       
+```
+
+## Задача 9
+Да се напише функция getFirstUniqueChar(), която приема символен низ и връща
+първия елемент, който не се повтаря. Ако не съществува, функцията извежда 0.
+
+```
+Примерен вход: pepsii
+Примерен изход: e
+
+Примерен вход: Pepsii
+Примерен изход: P
+``` 
+
+<details><summary><b>Solution</b></summary> 
+<p>
+
+```cpp
+#include <iostream>
+
+char getUniqueChar(char* string)
+{
+	char currentChar;
+
+	while (*string != '\0')
+	{
+		currentChar = *string;
+		for (int i = 1; string[i] != '\0'; i++)
+		{
+			if (currentChar == string[i]) 
+			{
+				currentChar = '\0';
+				break;
+			}
+		}
+
+		if (currentChar != '\0') 
+            return currentChar;
+
+		string++;
+	}
+
+	return '\0';
+}
+
+int main()
+{
+	char string[100];
+	std::cin.get(string, 100);
+
+	std::cout << getUniqueChar(string);
+}
 ```
 
 </p>
